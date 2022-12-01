@@ -1,0 +1,1 @@
+@val @scope("performance") external now: unit => float = "now"
