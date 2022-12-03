@@ -5,7 +5,7 @@ Aims to solve every [Advent of Code](https://adventofcode.com/) 2022 challenge i
 ## Installation
 
 ```sh
-yarn install // or npm install
+yarn install # or npm install
 ```
 
 ## Build
@@ -17,5 +17,5 @@ yarn install // or npm install
 ## Run
 
 ```sh
-node solutions/Day1.bs.js // or Day2 etc.
+node solutions/Day1.bs.js # or Day2 etc.
 ```
