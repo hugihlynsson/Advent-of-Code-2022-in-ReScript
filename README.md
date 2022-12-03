@@ -1,11 +1,11 @@
-# ReScript Project Template
+# Advent of Code 2022 solved in ReScript
 
-The only official ReScript starter template.
+Aims to solve every [Advent of Code](https://adventofcode.com/) 2022 challenge in [ReScript](https://rescript-lang.org/)
 
 ## Installation
 
 ```sh
-npm install
+yarn install // or npm install
 ```
 
 ## Build
@@ -17,5 +17,5 @@ npm install
 ## Run
 
 ```sh
-node src/Demo.bs.js
+node solutions/Day1.bs.js // or Day2 etc.
 ```
