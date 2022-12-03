@@ -6,23 +6,21 @@
 // X for Rock, Y for Paper, and Z for Scissors
 let start = Performance.now()
 
-let getGameScore = (game: string) =>
-  switch game {
-  | "A X" => 4 // draw + rock = 3 + 1
-  | "A Y" => 8 // win + paper = 6 + 2
-  | "A Z" => 3 // loss + scissors = 0 + 3
-  | "B X" => 1 // loss + rock = 0 + 1
-  | "B Y" => 5 // draw + paper = 3 + 2
-  | "B Z" => 9 // win + scissors = 6 + 3
-  | "C X" => 7 // draw + rock = 6 + 1
-  | "C Y" => 2 // loss + paper = 0 + 2
-  | "C Z" => 6 // draw + scissors = 3 + 3
-  | unknown => failwith(`Unknown game: ${unknown}`)
-  }
+let scoreMap = Belt.Map.String.fromArray([
+  ("A X", 4), // draw + rock = 3 + 1
+  ("A Y", 8), // win + paper = 6 + 2
+  ("A Z", 3), // loss + scissors = 0 + 3
+  ("B X", 1), // loss + rock = 0 + 1
+  ("B Y", 5), // draw + paper = 3 + 2
+  ("B Z", 9), // win + scissors = 6 + 3
+  ("C X", 7), // draw + rock = 6 + 1
+  ("C Y", 2), // loss + paper = 0 + 2
+  ("C Z", 6), // draw + scissors = 3 + 3
+])
 
 let totalScore =
   Js.String2.split(Day2Input.data, "\n")->Belt.Array.reduce(0, (sum, game) =>
-    sum + getGameScore(game)
+    sum + Belt.Map.String.getExn(scoreMap, game)
   )
 
 let end = Performance.now()
@@ -34,23 +32,21 @@ Js.log(`Part 1, total score: ${Belt.Int.toString(totalScore)}, took ${executionT
 // X means loose, Y means draw, and Z means win
 let start = Performance.now()
 
-let getGameScore = (game: string) =>
-  switch game {
-  | "A X" => 3 // rock and loose (scissors) = 0 + 3
-  | "A Y" => 4 // rock and draw (rock) = 3 + 1
-  | "A Z" => 8 // rock and win (paper) = 6 + 2
-  | "B X" => 1 // paper and loose (rock) = 0 + 1
-  | "B Y" => 5 // paper and draw (paper) = 3 + 2
-  | "B Z" => 9 // paper and win (scissors) = 6 + 3
-  | "C X" => 2 // scissors and loose (paper) = 0 + 2
-  | "C Y" => 6 // scissors and draw (scissors) = 3 + 3
-  | "C Z" => 7 // scissors and win (rock) = 6 + 1
-  | unknown => failwith(`Unknown game: ${unknown}`)
-  }
+let scoreMap = Belt.Map.String.fromArray([
+  ("A X", 3), // rock and loose (scissors) = 0 + 3
+  ("A Y", 4), // rock and draw (rock) = 3 + 1
+  ("A Z", 8), // rock and win (paper) = 6 + 2
+  ("B X", 1), // paper and loose (rock) = 0 + 1
+  ("B Y", 5), // paper and draw (paper) = 3 + 2
+  ("B Z", 9), // paper and win (scissors) = 6 + 3
+  ("C X", 2), // scissors and loose (paper) = 0 + 2
+  ("C Y", 6), // scissors and draw (scissors) = 3 + 3
+  ("C Z", 7), // scissors and win (rock) = 6 + 1
+])
 
 let totalScore =
   Js.String2.split(Day2Input.data, "\n")->Belt.Array.reduce(0, (sum, game) =>
-    sum + getGameScore(game)
+    sum + Belt.Map.String.getExn(scoreMap, game)
   )
 
 let end = Performance.now()
