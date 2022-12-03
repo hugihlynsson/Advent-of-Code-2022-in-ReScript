@@ -26,3 +26,35 @@ let priorities = Js.Array2.map(intersections, getPriority)
 let result = Js.Array2.reduce(priorities, (sum, item) => sum + item, 0)
 
 Js.log(result)
+
+// Part 2
+// Split input by lines
+let matchEveryThreeLines = %re("/(?:^.*$\n?){1,3}/mg")
+let groups =
+  Js.String2.match_(Day3Input.data, matchEveryThreeLines)
+  ->Belt.Option.getWithDefault([])
+  ->Belt.Array.keepMap(a => a)
+  
+let groupBadges = Js.Array2.map(groups, group => {
+  let (a, b, c) = switch Js.String2.split(group, "\n") {
+  | [a, b, c] => (a, b, c) // The last match doesn't have an ending newline
+  | [a, b, c, _] => (a, b, c) // All other matches have and empty last match
+  | _ => failwith(`Unexpected group`) // Won't happen
+  }
+
+  Belt.Set.String.intersect(
+    Js.String2.split(a, "")->Belt.Set.String.fromArray,
+    Js.String2.split(b, "")->Belt.Set.String.fromArray,
+  )
+  ->Belt.Set.String.intersect(Js.String2.split(c, "")->Belt.Set.String.fromArray)
+  ->Belt.Set.String.toArray
+})
+let badges = Js.Array2.concatMany([], groupBadges)
+let priorities = Js.Array2.map(badges, getPriority)
+let sum = Js.Array2.reduce(priorities, (sum, item) => sum + item, 0)
+
+Js.log(sum)
+// Group every 3 lines together
+// For each group, create a set of each item and find their intersection
+// For the intersection, calculate the priority
+// Sum the priorities
