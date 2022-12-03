@@ -6,7 +6,7 @@
 // X for Rock, Y for Paper, and Z for Scissors
 let start = Performance.now()
 
-let scoreMap = Belt.Map.String.fromArray([
+let scoreMap = Js.Dict.fromArray([
   ("A X", 4), // draw + rock = 3 + 1
   ("A Y", 8), // win + paper = 6 + 2
   ("A Z", 3), // loss + scissors = 0 + 3
@@ -19,8 +19,9 @@ let scoreMap = Belt.Map.String.fromArray([
 ])
 
 let totalScore =
-  Js.String2.split(Day2Input.data, "\n")->Belt.Array.reduce(0, (sum, game) =>
-    sum + Belt.Map.String.getExn(scoreMap, game)
+  Js.String2.split(Day2Input.data, "\n")->Js.Array2.reduce(
+    (sum, game) => sum + Js.Dict.unsafeGet(scoreMap, game), // We know scoreMap is exhaustive so unsafe is fine
+    0,
   )
 
 let end = Performance.now()
@@ -32,7 +33,7 @@ Js.log(`Part 1, total score: ${Belt.Int.toString(totalScore)}, took ${executionT
 // X means loose, Y means draw, and Z means win
 let start = Performance.now()
 
-let scoreMap = Belt.Map.String.fromArray([
+let scoreMap = Js.Dict.fromArray([
   ("A X", 3), // rock and loose (scissors) = 0 + 3
   ("A Y", 4), // rock and draw (rock) = 3 + 1
   ("A Z", 8), // rock and win (paper) = 6 + 2
@@ -45,8 +46,9 @@ let scoreMap = Belt.Map.String.fromArray([
 ])
 
 let totalScore =
-  Js.String2.split(Day2Input.data, "\n")->Belt.Array.reduce(0, (sum, game) =>
-    sum + Belt.Map.String.getExn(scoreMap, game)
+  Js.String2.split(Day2Input.data, "\n")->Js.Array2.reduce(
+    (sum, game) => sum + Js.Dict.unsafeGet(scoreMap, game), // We know scoreMap is exhaustive so unsafe is fine
+    0,
   )
 
 let end = Performance.now()
