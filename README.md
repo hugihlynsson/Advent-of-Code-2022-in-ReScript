@@ -4,6 +4,8 @@ Aims to solve every [Advent of Code](https://adventofcode.com/) 2022 challenge i
 
 ## Installation
 
+Prerequisites: A recent version of [Node.js](https://nodejs.org/en/)
+
 ```sh
 yarn install # or npm install
 ```
