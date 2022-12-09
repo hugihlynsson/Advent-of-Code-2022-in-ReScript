@@ -13,22 +13,24 @@ let map =
 
 let getPointValue = (map, (x, y)) => Array.getExn(map, x)->Array.getExn(y)
 
+let getPaths = (mapWidth, mapHeight, x, y) => {
+  let upPoints = Array.range(0, y - 1)->Array.map(y => (x, y))->Array.reverse
+  let rightPoints = Array.range(x + 1, mapWidth - 1)->Array.map(x => (x, y))
+  let downPoints = Array.range(y + 1, mapHeight - 1)->Array.map(y => (x, y))
+  let leftPoints = Array.range(0, x - 1)->Array.map(x => (x, y))->Array.reverse
+
+  [upPoints, rightPoints, downPoints, leftPoints]
+}
+
 let isVisible = (map, x, y) => {
   let isLineLower = (map, points, height) =>
     Array.map(points, point => getPointValue(map, point))->Array.every(h => h < height)
 
-  let upPoints = Array.range(0, y - 1)->Array.map(y => (x, y))
-  let rightPoints =
-    Array.range(x + 1, Array.getExn(map, 0)->Array.length - 1)->Array.map(x => (x, y))
-  let downPoints = Array.range(y + 1, Array.length(map) - 1)->Array.map(y => (x, y))
-  let leftPoints = Array.range(0, x - 1)->Array.map(x => (x, y))
+  let paths = getPaths(Array.getExn(map, 0)->Array.length, Array.length(map), x, y)
 
   let height = getPointValue(map, (x, y))
 
-  isLineLower(map, upPoints, height) ||
-  isLineLower(map, rightPoints, height) ||
-  isLineLower(map, downPoints, height) ||
-  isLineLower(map, leftPoints, height)
+  Array.some(paths, path => isLineLower(map, path, height))
 }
 
 // Part 1 solution
@@ -38,26 +40,20 @@ Array.mapWithIndex(map, (y, row) => Array.mapWithIndex(row, (x, _) => isVisible(
 ->Array.length
 ->Js.log
 
+// Part 2
+let treesVisible = (points, height) =>
+  Array.reduce(points, (0.0, true), ((sum, counting), current) =>
+    counting ? (sum +. 1.0, current < height) : (sum, false)
+  )->fst
+
 let getScenicScore = (map, x, y) => {
-  let treesVisible = (map, points, height) =>
-    Array.map(points, point => getPointValue(map, point))
-    ->Array.reduce((0.0, true), ((sum, counting), current) =>
-      counting ? (sum +. 1.0, current < height) : (sum, false)
-    )
-    ->fst
-
-  let upPoints = Array.range(0, y - 1)->Array.map(y => (x, y))->Array.reverse
-  let rightPoints =
-    Array.range(x + 1, Array.getExn(map, 0)->Array.length - 1)->Array.map(x => (x, y))
-  let downPoints = Array.range(y + 1, Array.length(map) - 1)->Array.map(y => (x, y))
-  let leftPoints = Array.range(0, x - 1)->Array.map(x => (x, y))->Array.reverse
-
   let height = getPointValue(map, (x, y))
 
-  treesVisible(map, upPoints, height) *.
-  treesVisible(map, rightPoints, height) *.
-  treesVisible(map, downPoints, height) *.
-  treesVisible(map, leftPoints, height)
+  let paths = getPaths(Array.getExn(map, 0)->Array.length, Array.length(map), x, y)
+
+  Array.map(paths, path => Array.map(path, point => getPointValue(map, point)))
+  ->Array.map(path => treesVisible(path, height))
+  ->Array.reduce(1.0, (sum, trees) => sum *. trees)
 }
 
 // Part 2 solution
